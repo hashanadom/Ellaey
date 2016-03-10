@@ -29,7 +29,7 @@ def combine_xls(xl1, xl2):
     wb = Workbook()
     ws= wb.get_active_sheet()
     while st(i) in os.listdir(savedir):
-        i++
+        i+=1
     filename="/xl"+st(i)+".xlsx"
     openpyxl.workbook.save_workbook(_save_dir+filename)
     return filename
