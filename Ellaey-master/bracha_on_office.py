@@ -8,39 +8,46 @@ import base64
 import imaplib
 import email
 import os
+global _save_dir = os.path.dirname(os.path.realpath(__file__))
 
-
-def read_xlsx_file(filename):
+# gets a filename, retrieve the xlsx string data
+def read_xlsx_file(filename1,filename2=""):
     rows = []
-    wb = load_workbook(filename)
-    ws = wb.get_active_sheet()
-    for row in ws.iter_rows(row_offset=1):
-        rows.append(row)
-    return rows
+    if not filename1:
+        wb = load_workbook(filename1)
+        ws = wb.get_active_sheet()
+        for row in ws.iter_rows(row_offset=1):
+            rows.append(row)
+        return rows
+    return read_xlsx_file(filename1),read_xlsx_file(filename2)
 
-
-def combine_xls(xl1, xl2, dir):
-    data1 = read_xlsx_file(xl1)
+# gets 2 filenames, returns a filename
+def combine_xls(xl1, xl2):
+    i=0
+    data1 = read_xlsx_file(xl1)s
     data2 = read_xlsx_file(xl2)
     wb = Workbook()
     ws= wb.get_active_sheet()
-    openpyxl.workbook.save_workbook()
-    return dir
-
-
-def send_to(type, sender, sender_pass, recipients, message, data):
+    while st(i) in os.listdir(savedir):
+        i++
+    filename="/xl"+st(i)+".xlsx"
+    openpyxl.workbook.save_workbook(_save_dir+filename)
+    return filename
+    
+# gets type, sender, sender's password, recipients, message and a filename, returns a string
+def send_to(t, sender, sender_pass, recipients, message, data):
     server = 'mail.server.com'
     user = sender
     password = sender_pass
-    if type == "mail":
+    if t == "mail":
         try:
             smtplib.SMTP('localhost').sendmail(sender, recipients, message+'$'+base64.encode(data))
             return "success"
         except smtplib.SMTPException:
             return ""
 
-
-def receive(type, recipient, password):
+# gets a recipent and a password and a t variable mentioning the way of sending, for now, it's limited to mail, or more accurately gmail
+def receive(t, recipient, password):
     svdir = 'c:/downloads/'
     if type == "mail" and "gmail" in recipient:
         mail = imaplib.IMAP4_SSL('imap.gmail.com')
