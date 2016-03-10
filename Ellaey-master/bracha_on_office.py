@@ -18,7 +18,7 @@ def read_xlsx_file(filename1,filename2=""):
         ws = wb.get_active_sheet()
         for row in ws.iter_rows(row_offset=1):
             rows.append(row)
-        return rows
+        return rows,""
     return read_xlsx_file(filename1),read_xlsx_file(filename2)
 
 # gets 2 filenames, returns a filename
